@@ -1,0 +1,22 @@
+caddy:
+  image: zhanhao/caddy
+  ports:
+    - "80:80/tcp"
+    - "443:443/tcp"
+  links:
+    - frp
+  volumes:
+    - "/root/docker/caddy-pack/config:/caddy/config"
+  restart: always
+
+frp:
+  image: zhanhao/frp
+  ports:
+    - "7000:7000/tcp"
+    - "7500:7500/tcp"
+    - "7000:7000/udp"
+    - "10022:10022/tcp"
+  volumes:
+    - "/root/docker/caddy-pack/config:/frp/config"
+  restart: always
+
