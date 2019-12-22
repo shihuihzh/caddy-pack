@@ -1,16 +1,6 @@
-caddy:
-  image: zhanhao/caddy
-  ports:
-    - "80:80/tcp"
-    - "443:443/tcp"
-  links:
-    - frp
-  volumes:
-    - "/root/docker/caddy-pack/config:/caddy/config"
-  restart: always
 
 frp:
-  image: zhanhao/frp
+  image: zhanhao/frps:0.29.1
   ports:
     - "7000:7000/tcp"
     - "7500:7500/tcp"
@@ -20,3 +10,52 @@ frp:
     - "/root/docker/caddy-pack/config:/frp/config"
   restart: always
 
+jbl:
+    image: zhanhao/lightjbl
+    ports:
+      - "6666:6666"
+    restart: always
+
+v2ray:
+  image: v2ray/official
+  volumes:
+    - "/root/docker/caddy-pack/config/config.json:/etc/v2ray/config.json"
+  restart: always
+
+# node:
+#     image: node
+#     ports:
+#       - "10980:8080"
+#     volumes:
+#       - "/root/node:/node"
+#     working_dir: "/node"
+#     command: ["node", "index.js"]
+#     restart: always
+#kod:
+#    image: zhanhao/kod2
+#    volumes:
+#      - "/root/data/kod:/var/www/html"
+#
+#
+#next:
+#    image: nextcloud:stable-fpm
+#    volumes:
+#      - "/root/data/next:/var/www/html"
+#    restart: always
+
+caddy:
+  image: zhanhao/caddy
+  ports:
+    - "80:80/tcp"
+    - "443:443/tcp"
+  links:
+    - frp
+    - jbl
+#    - node
+#    - next
+    - v2ray
+  volumes:
+    - "/root/docker/caddy-pack/config:/caddy/config"
+    - "/root/data/next:/var/www/html"
+    - "/root/data:/data"
+  restart: always
